@@ -1,0 +1,25 @@
+{
+  "name": "ChatGpt UIPreview",
+  "version": "0.1.0",
+  "description": "Saving Time to check UI code",
+  "permissions": ["storage", "tabs", "management"],
+  "host_permissions": ["https://*.chatgpt.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["contentScript.js"]
+    }
+  ],
+
+  "action": {
+    "default_icon": {
+      "32": "assets/ext-icon.png"
+    },
+    "default_title": "My chatgpt UI",
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 3
+}
