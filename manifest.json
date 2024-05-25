@@ -1,24 +1,24 @@
 {
-  "name": "ChatGpt UIPreview",
+  "name": "ChatGPT UI Preview",
   "version": "0.1.0",
-  "description": "Saving Time to check UI code",
-  "permissions": ["storage", "tabs", "management"],
+  "description": "Use ChatGPT normally. When there's any code block with supported language, the extension will automatically insert code preview ",
+  "permissions": [],
   "host_permissions": ["https://*.chatgpt.com/*"],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": ["https://*.chatgpt.com/*","https://*.chatgpt.com/*"],
       "js": ["contentScript.js"]
     }
-  ],
-
+]
+,
   "action": {
     "default_icon": {
-      "32": "assets/ext-icon.png"
+      "32": "assets/play.png"
     },
-    "default_title": "My chatgpt UI",
+    "default_title": "chatGPT HTML/CSS/JS UI Preview",
     "default_popup": "popup.html"
   },
   "manifest_version": 3
