@@ -69,7 +69,7 @@
       let preHTML =  new DOMParser().parseFromString(data, 'text/html')?.body?.innerHTML.replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&')?.replace(/<span[^>]*>|<\/span>/g, '');
-   return preHTML
+   return preHTML=="undefined"?undefined:preHTML;
     }
   
     // order3

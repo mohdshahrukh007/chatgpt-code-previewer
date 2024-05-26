@@ -1,7 +1,7 @@
 {
-  "name": "ChatGPT UI Preview",
+  "name": "ChatGPT To Code Preview",
   "version": "0.1.0",
-  "description": "Use ChatGPT normally. When there's any code block with supported language, the extension will automatically insert code preview ",
+  "description": "When there's any code block with HTML language included, the extension will automatically insert code preview.",
   "permissions": [],
   "host_permissions": ["https://*.chatgpt.com/*"],
   "background": {
@@ -9,17 +9,25 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.chatgpt.com/*","https://*.chatgpt.com/*"],
+      "matches": ["https://*.chatgpt.com/*"],
       "js": ["contentScript.js"]
     }
-]
-,
+  ],
   "action": {
     "default_icon": {
-      "32": "assets/play.png"
+      "16": "assets/play.png",
+      "32": "assets/play.png",
+      "48": "assets/play.png",
+      "128": "assets/play.png"
     },
-    "default_title": "chatGPT HTML/CSS/JS UI Preview",
+    "default_title": "ChatGPT HTML/CSS/JS UI Preview",
     "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "assets/play.png",
+    "32": "assets/play.png",
+    "48": "assets/play.png",
+    "128": "assets/play.png"
   },
   "manifest_version": 3
 }
