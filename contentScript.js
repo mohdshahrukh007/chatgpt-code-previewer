@@ -140,7 +140,21 @@ var isfullscreen=false;
        position: absolute;
        top: 10px;
        right: 1px;`
-
+ 
+       let middleSpan   = document.createElement("span")
+       middleSpan.style =`
+       color:white;
+       top:25px;
+        background:#333;
+        position: absolute;
+        top: 5%;
+        text-align:center; 
+        width:70%;
+        left: 50%;
+        padding:9px;
+        transform: translate(-50%, -50%);
+        `;
+middleSpan.innerHTML='HTML/CSS/JS Preview '
 
        // add full screen btn which will increase frame.width on click
        fullscreenWindow = document.createElement('button');
@@ -153,6 +167,7 @@ var isfullscreen=false;
        padding: 10px 15px;
        position: absolute;
        top: 10px;
+       left:0;
        font-size:'23';`
        fullscreenWindow.addEventListener('click',()=>{
         isfullscreen?iframe.width='1024':iframe.width='400';
@@ -169,6 +184,7 @@ var isfullscreen=false;
       div.style.marginTop='46px'
       // Append the div to the iframe's document body
       iframeDocument.body.append(closeDialogues);
+      iframeDocument.body.append(middleSpan);
       iframeDocument.body.append(fullscreenWindow);
       iframeDocument.body.appendChild(div);
     } 
