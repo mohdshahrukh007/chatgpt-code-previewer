@@ -34,6 +34,9 @@
     Last_CodeSnippet = combinedHTML
     showLatestUI(Last_CodeSnippet);
    }
+
+  function makecontentEditable(){
+  }
   //  order1
   function prepareUiBox(){
     if(!document.getElementById('MydivContainer')){
@@ -48,20 +51,19 @@
       var CSS =  document.getElementsByClassName('!whitespace-pre hljs language-css')[cssL-1]?.innerHTML || document.getElementsByClassName('!whitespace-pre language-css ')[cssL]?.innerHTML 
      var JS =    document.getElementsByClassName('!whitespace-pre hljs language-js')[jsL-1]?.innerHTML || document.getElementsByClassName('!whitespace-pre language-javascript')[jsL]?.innerHTML 
      HTML=  (CSS || JS)? getBodyWithoutScript(HTMLbodyParser(HTML)):HTMLbodyParser(HTML);
+     if(HTML==undefined || !HTML ){
+      HTML =  'No HTML code Preview Available. Please add ALL In HTML Code in the prompt.';
+  }
      CSS= HTMLbodyParser(CSS);
       JS= HTMLbodyParser(JS);
      AllinOneConverter({HTML , CSS ,JS})
     } 
     function getBodyWithoutScript(html) {
-      // Parse the HTML string into a document
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
-      // Select the body element
       const body = doc.body;
-      // Remove all script elements from the body
       const scripts = body.querySelectorAll('script') || [];
       scripts.forEach(script => script.remove());
-      // Return the inner HTML of the body
       return body.innerHTML;
   }
   
@@ -77,11 +79,13 @@
     // getAgentBox();
     newDiv.textContent = Last_CodeSnippet?.replace('/&gt/g','');
     if (CodeSnippetLength!=0) {
+     
     var newCode = Last_CodeSnippet
       try {
         var doc = document.getElementById('IframeId')?.contentWindow.document.getElementById('uiShowDiv');
           doc.innerHTML = newCode;
       } catch (error) {
+        var doc = document.getElementById('IframeId')?.contentWindow.document.getElementById('uiShowDiv');
           doc.innerHTML = 'No code Preview Available. Please add ALL In HTML Code in the prompt.';
       }
     }else{
