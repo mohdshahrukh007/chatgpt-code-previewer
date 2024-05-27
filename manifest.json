@@ -1,7 +1,7 @@
 {
-  "name": "ChatGPT To Code Preview",
-  "version": "0.1.0",
-  "description": "When there's any code block with HTML language included, the extension will automatically insert code preview.",
+  "name": "ChatGPT UI Preview",
+  "version": "1.0.0",
+  "description": "With ChatGPT UI Preview, you can now view the UI result of your code right in the ChatGPT sidebar.Imagine this: You're experimenting with some HTML, CSS, or JS code within a ChatGPT prompt, and you want to see how it looks without leaving the conversation. Instead of copying your code to a separate environment or browser tab",
   "permissions": [],
   "host_permissions": ["https://*.chatgpt.com/*"],
   "background": {
@@ -15,19 +15,19 @@
   ],
   "action": {
     "default_icon": {
-      "16": "assets/play.png",
-      "32": "assets/play.png",
-      "48": "assets/play.png",
-      "128": "assets/play.png"
+      "16": "assets/play16.png",
+      "32": "assets/play32.png",
+      "48": "assets/play48.png",
+      "128": "assets/play128.png"
     },
     "default_title": "ChatGPT HTML/CSS/JS UI Preview",
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "assets/play.png",
-    "32": "assets/play.png",
-    "48": "assets/play.png",
-    "128": "assets/play.png"
+    "16": "assets/play16.png",
+    "32": "assets/play32.png",
+    "48": "assets/play48.png",
+    "128": "assets/play128.png"
   },
   "manifest_version": 3
 }
