@@ -14,9 +14,17 @@
     iframe.width = isOpen ? '60px' : '400px';
     isOpen = !isOpen;
   }
-
-  // order2
   function AllinOneConverter(languages){
+    var code = {
+      title: "ChatGPT UI previewer",
+      html               : languages.HTML,
+      css                : languages.CSS,
+      js                 : languages.JS
+    };
+    JSONstring =  JSON.stringify(code)
+    .replace(/"/g, "&quot;") 
+    .replace(/'/g, "&apos;");
+
     let combinedHTML = `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -27,6 +35,14 @@
     </head>
     <body>
     ${languages.HTML}
+    <form style="position: absolute; bottom: 10px; right: 10px;" action="https://codepen.io/pen/define" method="POST" target="_blank">
+    <input type="hidden" name="data" value='${JSONstring}'> 
+    <input alt="open In Codepen"
+     style="position: fixed; bottom: 20px; right: 20px; background-color: black; border: none; color: white;
+      padding: 10px 20px; font-size: 16px; border-radius: 35px; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+      transition: background-color 0.3s ease;"  class="codepen-mover-button"
+       type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
+    </form>
     <script type="text/javascript" >
     ${languages.JS}</script>
     </body>
@@ -47,9 +63,12 @@
      let hL = document.getElementsByClassName('!whitespace-pre hljs language-html').length
      let cssL = document.getElementsByClassName('!whitespace-pre hljs language-css').length
      let jsL = document.getElementsByClassName('!whitespace-pre hljs language-js').length
-     var HTML  = document.getElementsByClassName('!whitespace-pre hljs language-html')[hL-1]?.innerHTML || document.getElementsByClassName('!whitespace-pre language-html')[hL]?.innerHTML
-      var CSS =  document.getElementsByClassName('!whitespace-pre hljs language-css')[cssL-1]?.innerHTML || document.getElementsByClassName('!whitespace-pre language-css ')[cssL]?.innerHTML 
-     var JS =    document.getElementsByClassName('!whitespace-pre hljs language-js')[jsL-1]?.innerHTML || document.getElementsByClassName('!whitespace-pre language-javascript')[jsL]?.innerHTML 
+     var HTML  = document.getElementsByClassName('!whitespace-pre hljs language-html')[hL-1]?.innerHTML      
+       || document.getElementsByClassName('!whitespace-pre hljs language-html')[hL]?.innerHTML
+      var CSS =  document.getElementsByClassName('!whitespace-pre hljs language-css')[cssL-1]?.innerHTML    
+       || document.getElementsByClassName('!whitespace-pre hljs language-css ')[cssL]?.innerHTML 
+     var JS =    document.getElementsByClassName('!whitespace-pre hljs language-javascript')[jsL-1]?.innerHTML 
+       || document.getElementsByClassName('!whitespace-pre hljs language-javascript')[jsL]?.innerHTML 
      HTML=  (CSS || JS)? getBodyWithoutScript(HTMLbodyParser(HTML)):HTMLbodyParser(HTML);
      if(HTML==undefined || !HTML ){
       HTML =  'No HTML code Preview Available. Please add ALL In HTML Code in the prompt.';

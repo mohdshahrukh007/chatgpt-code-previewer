@@ -1,7 +1,8 @@
 {
   "name": "ChatGPT UI Preview",
   "version": "1.0.0",
-  "description": "With ChatGPT UI Preview, you can now view the UI result of your code right in the ChatGPT sidebar.Imagine this: You're experimenting with some HTML, CSS, or JS code within a ChatGPT prompt, and you want to see how it looks without leaving the conversation. Instead of copying your code to a separate environment or browser tab",
+  "homepage_url": "https://gohalalway.web.app,",
+  "description":"Introducing ChatGPT UI Preview! Now, seamlessly view your HTML, CSS, or JS code results right in the ChatGPT sidebar",  
   "permissions": [],
   "host_permissions": ["https://*.chatgpt.com/*"],
   "background": {

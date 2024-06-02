@@ -1,4 +1,4 @@
-The `chatgpt-code-previewer` tool serves the purpose of efficiently previewing user interfaces generated from ChatGPT's code, primarily focusing on HTML and CSS. By providing a streamlined way to visualize the UI output, it significantly reduces the time required for developers and designers to iterate and refine their designs.
+The `ChatGPT UI Preview` tool serves the purpose of efficiently previewing user interfaces generated from ChatGPT's code, primarily focusing on HTML and CSS. By providing a streamlined way to visualize the UI output, it significantly reduces the time required for developers and designers to iterate and refine their designs.
 
 This tool enhances productivity by enabling the following:
 
@@ -12,4 +12,4 @@ This tool enhances productivity by enabling the following:
 
 5. **Educational Tool**: For learners or those new to web development, the previewer provides an interactive way to understand how HTML and CSS work together to create user interfaces. It offers a hands-on learning experience, allowing users to experiment with code and immediately see the results.
 
-Overall, the `chatgpt-code-previewer` tool empowers developers and designers to visualize, iterate, and refine UI designs efficiently, ultimately speeding up the development process and improving the quality of the final product.
+Overall, the `ChatGPT UI Preview` tool empowers developers and designers to visualize, iterate, and refine UI designs efficiently, ultimately speeding up the development process and improving the quality of the final product.
