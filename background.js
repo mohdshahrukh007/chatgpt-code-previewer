@@ -1,7 +1,6 @@
 chrome.tabs.onUpdated.addListener((tabId, changeInfo,tab) => {
   if (changeInfo.status === 'complete') {
-    // Re-inject content script
-    // chrome.tabs.onUpdated(tabId, { file: 'content.js' });
+    chrome.tabs.onUpdated(tabId, { file: 'contentScript.js' });
 }
 
   if (tab.url && tab.url.includes("chatgpt.com")) {

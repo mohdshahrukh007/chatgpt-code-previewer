@@ -1,20 +1,8 @@
-import { getActiveTabURL } from "./utils.js";
- 
-
-document.addEventListener("DOMContentLoaded", async () => {
-  checkURL();
+let radioFlag=true;
+document.getElementById("triggerMethodBtn").addEventListener("click", function() {
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { message: "activeMode" }, function(response) {
+          radioFlag = response.reply
+      });
+  });
 });
-function checkURL() {
-  const activeTab = getActiveTabURL();
-  if (activeTab.url.includes("chatgpt")) {
-  } else {
-    const container = document.body
-    if (container) {
-      container.innerHTML = '<div class="title">This is not a ChatGPT page.</div>';
-    }
-  }
-}
- 
-// setInterval(checkURL, 1000); // Adjust the interval as needed
-
-

@@ -1,29 +1,28 @@
-
 (() => {
-  
-  var newDiv = null
-  var CodeBoxlength = null
-  var CodeSnippetLength = null
-  var Last_CodeSnippet = null
-  var  isOpen = true;
-  var iframeDocument =null
-  
-
-  const closeDialoguesfn=()=>{
-    const iframe = document.getElementById('IframeId');
-    iframe.width = isOpen ? '60px' : '400px';
+  var newDiv = null;
+  var CodeSnippetLength = null;
+  var Last_CodeSnippet = null;
+  var isOpen = true;
+  var iframeDocument = null;
+  var iframe;
+  var closeDialogues = null;
+  var fullscreenWindow = null;
+  var isfullscreen = false;
+  const closeDialoguesfn = () => {
+    const iframe = document.getElementById("IframeId");
+    iframe.width = isOpen ? "0px" : "400px";
     isOpen = !isOpen;
-  }
-  function AllinOneConverter(languages){
+  };
+  function AllinOneConverter(languages) {
     var code = {
       title: "ChatGPT UI previewer",
-      html               : languages.HTML,
-      css                : languages.CSS,
-      js                 : languages.JS
+      html: languages.HTML,
+      css: languages.CSS,
+      js: languages.JS,
     };
-    JSONstring =  JSON.stringify(code)
-    .replace(/"/g, "&quot;") 
-    .replace(/'/g, "&apos;");
+    JSONstring = JSON.stringify(code)
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
 
     let combinedHTML = `<!DOCTYPE html>
     <html lang="en">
@@ -47,69 +46,101 @@
     ${languages.JS}</script>
     </body>
     </html>`;
-    Last_CodeSnippet = combinedHTML
+    Last_CodeSnippet = combinedHTML;
     showLatestUI(Last_CodeSnippet);
-   }
+  }
 
-  function makecontentEditable(){
-  }
   //  order1
-  function prepareUiBox(){
-    if(!document.getElementById('MydivContainer')){
-      newDiv = document.createElement('div');
-      newDiv.id="MydivContainer"
+  function prepareUiBox() {
+    if (!document.getElementById("MydivContainer")) {
+      newDiv = document.createElement("div");
+      newDiv.id = "MydivContainer";
     }
-     CodeSnippetLength = document.getElementsByClassName('!whitespace-pre')?.length
-     let hL = document.getElementsByClassName('!whitespace-pre hljs language-html').length
-     let cssL = document.getElementsByClassName('!whitespace-pre hljs language-css').length
-     let jsL = document.getElementsByClassName('!whitespace-pre hljs language-js').length
-     var HTML  = document.getElementsByClassName('!whitespace-pre hljs language-html')[hL-1]?.innerHTML      
-       || document.getElementsByClassName('!whitespace-pre hljs language-html')[hL]?.innerHTML
-      var CSS =  document.getElementsByClassName('!whitespace-pre hljs language-css')[cssL-1]?.innerHTML    
-       || document.getElementsByClassName('!whitespace-pre hljs language-css ')[cssL]?.innerHTML 
-     var JS =    document.getElementsByClassName('!whitespace-pre hljs language-javascript')[jsL-1]?.innerHTML 
-       || document.getElementsByClassName('!whitespace-pre hljs language-javascript')[jsL]?.innerHTML 
-     HTML=  (CSS || JS)? getBodyWithoutScript(HTMLbodyParser(HTML)):HTMLbodyParser(HTML);
-     if(HTML==undefined || !HTML ){
-      HTML =  'No HTML code Preview Available. Please add ALL In HTML Code in the prompt.';
-  }
-     CSS= HTMLbodyParser(CSS);
-      JS= HTMLbodyParser(JS);
-     AllinOneConverter({HTML , CSS ,JS})
-    } 
-    function getBodyWithoutScript(html) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const body = doc.body;
-      const scripts = body.querySelectorAll('script') || [];
-      scripts.forEach(script => script.remove());
-      return body.innerHTML;
-  }
-  
- function HTMLbodyParser(data){
-      let preHTML =  new DOMParser().parseFromString(data, 'text/html')?.body?.innerHTML.replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&amp;/g, '&')?.replace(/<span[^>]*>|<\/span>/g, '');
-   return preHTML=="undefined"?undefined:preHTML;
+    CodeSnippetLength = document.getElementsByClassName("!whitespace-pre")
+      ?.length;
+    let hL = document.getElementsByClassName(
+      "!whitespace-pre hljs language-html"
+    ).length;
+    let cssL = document.getElementsByClassName(
+      "!whitespace-pre hljs language-css"
+    ).length;
+    let jsL =
+      document.getElementsByClassName("!whitespace-pre hljs language-js")
+        .length ||
+      document.getElementsByClassName(
+        "!whitespace-pre hljs language-javascript"
+      ).length;
+    var HTML =
+      document.getElementsByClassName("!whitespace-pre hljs language-html")[
+        hL - 1
+      ]?.innerHTML ||
+      document.getElementsByClassName("!whitespace-pre hljs language-html")[hL]
+        ?.innerHTML;
+    var CSS =
+      document.getElementsByClassName("!whitespace-pre hljs language-css")[
+        cssL - 1
+      ]?.innerHTML ||
+      document.getElementsByClassName("!whitespace-pre hljs language-css ")[
+        cssL
+      ]?.innerHTML;
+    var jsDom =
+      document.getElementsByClassName(
+        "!whitespace-pre hljs language-javascript"
+      ) || document.getElementsByClassName("!whitespace-pre hljs language-js");
+    JS = jsDom[jsL - 1]?.innerHTML || jsDom[jsL]?.innerHTML;
+    HTML =
+      CSS || JS
+        ? getBodyWithoutScript(HTMLbodyParser(HTML))
+        : HTMLbodyParser(HTML);
+    if (HTML == undefined || !HTML) {
+      HTML =
+        "No HTML code Preview Available. Please add ALL In HTML Code in the prompt.";
     }
-  
-    // order3
-  function showLatestUI(){
+    CSS = HTMLbodyParser(CSS);
+    JS = HTMLbodyParser(JS);
+    AllinOneConverter({ HTML, CSS, JS });
+  }
+  function getBodyWithoutScript(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const body = doc.body;
+    const scripts = body.querySelectorAll("script") || [];
+    scripts.forEach((script) => script.remove());
+    return body.innerHTML;
+  }
+
+  function HTMLbodyParser(data) {
+    let preHTML = new DOMParser()
+      .parseFromString(data, "text/html")
+      ?.body?.innerHTML.replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      ?.replace(/<span[^>]*>|<\/span>/g, "");
+    return preHTML == "undefined" ? undefined : preHTML;
+  }
+  // order3
+  function showLatestUI(Last_CodeSnippet) {
     // getAgentBox();
-    newDiv.textContent = Last_CodeSnippet?.replace('/&gt/g','');
-    if (CodeSnippetLength!=0) {
-     
-    var newCode = Last_CodeSnippet
+    newDiv.textContent = Last_CodeSnippet?.replace("/&gt/g", "");
+    if (CodeSnippetLength != 0) {
+      var newCode = Last_CodeSnippet;
       try {
-        var doc = document.getElementById('IframeId')?.contentWindow.document.getElementById('uiShowDiv');
-          doc.innerHTML = newCode;
+        var doc = document
+          .getElementById("IframeId")
+          ?.contentWindow.document.getElementById("uiShowDiv");
+        doc.innerHTML = newCode;
       } catch (error) {
-        var doc = document.getElementById('IframeId')?.contentWindow.document.getElementById('uiShowDiv');
-          doc.innerHTML = 'No code Preview Available. Please add ALL In HTML Code in the prompt.';
+        var doc = document
+          .getElementById("IframeId")
+          ?.contentWindow.document.getElementById("uiShowDiv");
+        doc.innerHTML =
+          "No code Preview Available. Please add ALL In HTML Code in the prompt.";
       }
-    }else{
-      var doc = document.getElementById('IframeId')?.contentWindow.document.getElementById('uiShowDiv');
-    doc.innerHTML = `<div style="max-width: 800px; margin: 50px auto; text-align: center;">
+    } else {
+      var doc = document
+        .getElementById("IframeId")
+        ?.contentWindow.document.getElementById("uiShowDiv");
+      doc.innerHTML = `<div style="max-width: 800px; margin: 50px auto; text-align: center;">
     <h3> No code Preview Available. Please  prompt </h3>
     <h1 style="font-size: 36px; color: #333; background-color: #f8f8f8; 
     padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -119,41 +150,48 @@
   </div>`;
     }
   }
-  const CustomListnerForEnter = () =>{
-  var sendButton = document.querySelector('[data-testid="send-button"]') || document.getElementsByClassName('mb-1 mr-1 flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition-colors hover:opacity-70 focus-visible:outline-none focus-visible:outline-black disabled:bg-[#D7D7D7] disabled:text-[#f4f4f4] disabled:hover:opacity-100 dark:bg-white dark:text-black dark:focus-visible:outline-white disabled:dark:bg-token-text-quaternary dark:disabled:text-token-main-surface-secondary')[0];
-  if(sendButton){
-    sendButton.addEventListener('click', function(event) {
-      showLatestUI();
-    });
+  const CustomListnerForEnter = () => {
+    var sendButton =
+      document.querySelector('[data-testid="send-button"]') ||
+      document.getElementsByClassName(
+        "mb-1 mr-1 flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition-colors hover:opacity-70 focus-visible:outline-none focus-visible:outline-black disabled:bg-[#D7D7D7] disabled:text-[#f4f4f4] disabled:hover:opacity-100 dark:bg-white dark:text-black dark:focus-visible:outline-white disabled:dark:bg-token-text-quaternary dark:disabled:text-token-main-surface-secondary"
+      )[0];
+    if (sendButton) {
+      sendButton.addEventListener("click", function (event) {
+        showLatestUI();
+      });
     }
-  }
-  var iframe;
-  var closeDialogues=null
-  var fullscreenWindow=null
-var isfullscreen=false;
-    const iframeDiv=()=>{
-      // created frame
-       iframe = document.createElement('iframe');
-      iframe.src = "about:blank";
-      iframe.width = '400';
-      iframe.className = 'IframeClass';
-      iframe.id = 'IframeId';
-      iframe.height = '700vh';
-      iframe.style.color = 'black';
-      // Find the container element in the DOM where you want to inject the iframe
-      if (document.querySelector('.relative.z-0.flex.h-full.w-full.overflow-hidden')) {
-        document.querySelector('.relative.z-0.flex.h-full.w-full.overflow-hidden').appendChild(iframe);
-       } else {
-       }
-       iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+  };
+  const iframeDiv = () => {
+    // created frame
+    iframe = document.createElement("iframe");
+    iframe.src = "about:blank";
+    iframe.width = "400";
+    iframe.className = "IframeClass";
+    iframe.id = "IframeId";
+    iframe.height = "700vh";
+    iframe.style.color = "black";
+    iframe.style.background = "white";
+    // Find the container element in the DOM where you want to inject the iframe
+    if (
+      document.querySelector(".relative.z-0.flex.h-full.w-full.overflow-hidden")
+    ) {
+      document
+        .querySelector(".relative.z-0.flex.h-full.w-full.overflow-hidden")
+        .appendChild(iframe);
+    } else {
+    }
+    iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
 
-       //aadding close icon 
-        closeDialogues = document.createElement("button");
-       closeDialogues.setAttribute("id", "closeDialogues");
-       closeDialogues.setAttribute("class", "close-button");
-       closeDialogues.innerHTML = "&times;"; // Add the cross mark as button content
-       closeDialogues.addEventListener('click', ()=>{closeDialoguesfn();})
-       closeDialogues.style = `
+    //aadding close icon
+    closeDialogues = document.createElement("button");
+    closeDialogues.setAttribute("id", "closeDialogues");
+    closeDialogues.setAttribute("class", "close-button");
+    closeDialogues.innerHTML = "&times;"; // Add the cross mark as button content
+    closeDialogues.addEventListener("click", () => {
+      closeDialoguesfn();
+    });
+    closeDialogues.style = `
        background-color: black;
        color:white;
        z-index:2;
@@ -162,10 +200,10 @@ var isfullscreen=false;
        padding: 10px 15px;
        position: absolute;
        top: 10px;
-       right: 1px;`
- 
-       let middleSpan   = document.createElement("span")
-       middleSpan.style =`
+       right: 1px;`;
+
+    let middleSpan = document.createElement("span");
+    middleSpan.style = `
        color:white;
        top:25px;
         background:#333;
@@ -177,12 +215,12 @@ var isfullscreen=false;
         padding:9px;
         transform: translate(-50%, -50%);
         `;
-middleSpan.innerHTML='HTML/CSS/JS Preview '
+    middleSpan.innerHTML = "HTML/CSS/JS Preview ";
 
-       // add full screen btn which will increase frame.width on click
-       fullscreenWindow = document.createElement('button');
-       fullscreenWindow.innerHTML ='&#x26F6;'
-       fullscreenWindow.style=`
+    // add full screen btn which will increase frame.width on click
+    fullscreenWindow = document.createElement("button");
+    fullscreenWindow.innerHTML = "&#x26F6;";
+    fullscreenWindow.style = `
        background-color: black;
        color:white;
        border-radius: 500px;
@@ -191,34 +229,124 @@ middleSpan.innerHTML='HTML/CSS/JS Preview '
        position: absolute;
        top: 10px;
        left:0;
-       font-size:'23';`
-       fullscreenWindow.addEventListener('click',()=>{
-        isfullscreen?iframe.width='1024':iframe.width='400';
-        isfullscreen=!isfullscreen
-
-       })
- 
-  // div inside frames
-      var div = iframeDocument.createElement('div');
-      div.className = 'uiShowDiv';
-      div.id = 'uiShowDiv'; 
-      div.style.padding = '20px';
-      div.style.color='black'
-      div.style.marginTop='46px'
-      // Append the div to the iframe's document body
-      iframeDocument.body.append(closeDialogues);
-      iframeDocument.body.append(middleSpan);
-      iframeDocument.body.append(fullscreenWindow);
-      iframeDocument.body.appendChild(div);
-    } 
-
-    chrome.runtime.onMessage.addListener((obj, sender, response) => {
-      CustomListnerForEnter();
-      if(!document.getElementsByClassName('IframeClass').length || !document.getElementsByClassName('IframeClass')){
-        iframeDiv()
-      }
-      setInterval(prepareUiBox,5000)
-  
+       font-size:'23';`;
+    fullscreenWindow.addEventListener("click", () => {
+      isfullscreen ? (iframe.width = "1024") : (iframe.width = "400");
+      isfullscreen = !isfullscreen;
     });
-  })();
-   
+
+    // div inside frames
+    var div = iframeDocument.createElement("div");
+    div.className = "uiShowDiv";
+    div.id = "uiShowDiv";
+    div.style.padding = "20px";
+    div.style.color = "black";
+    div.style.marginTop = "46px";
+    // Append the div to the iframe's document body
+    iframeDocument.body.append(closeDialogues);
+    iframeDocument.body.append(middleSpan);
+    iframeDocument.body.append(fullscreenWindow);
+    iframeDocument.body.appendChild(div);
+    //call arrow funcnntion
+    ArrowButton(() => {
+      closeDialoguesfn();
+    });
+  };
+  function ArrowButton(callback) {
+    // Select the parent element
+    // Create a container div for the button
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.position = "relative"; // For positioning tooltip
+    buttonContainer.style.display = "inline-block"; // Adjusts layout
+    buttonContainer.style.cursor = "pointer";
+    buttonContainer.style.transition = "transform 0.3s ease"; // For hover effect
+    buttonContainer.style.width = "196px"; // Width of the button
+    buttonContainer.style.height = "40px"; // Height of the button
+    buttonContainer.style.display = "flex"; // Center SVG inside the button
+    buttonContainer.style.alignItems = "center"; // Center vertically
+    buttonContainer.style.justifyContent = "center"; // Center horizontally
+    buttonContainer.style.marginLeft = "-32px";
+    const parentElement = document.querySelector(
+      '[class*="draggable no-draggable-children sticky"]'
+    );
+    
+    var ptag = document.createElement("p");
+    ptag.innerText = "Code Preview Screen";
+    buttonContainer.append(ptag);
+
+    // Create the SVG element
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svgElement = document.createElementNS(svgNS, "svg");
+    svgElement.setAttribute("width", "24");
+    svgElement.setAttribute("height", "24");
+    svgElement.setAttribute("viewBox", "0 0 24 24");
+    svgElement.setAttribute("fill", "none");
+    svgElement.setAttribute("stroke", "currentColor");
+    svgElement.setAttribute("stroke-width", "2");
+    svgElement.setAttribute("stroke-linecap", "round");
+    svgElement.setAttribute("stroke-linejoin", "round");
+
+    // Create the line element (for the arrow body)
+    const lineElement = document.createElementNS(svgNS, "line");
+    lineElement.setAttribute("x1", "5");
+    lineElement.setAttribute("y1", "12");
+    lineElement.setAttribute("x2", "19");
+    lineElement.setAttribute("y2", "12");
+
+    // Create the polyline element (for the arrowhead)
+    const polylineElement = document.createElementNS(svgNS, "polyline");
+    polylineElement.setAttribute("points", "12 5 19 12 12 19");
+
+    // Append the line and polyline elements to the SVG
+    svgElement.appendChild(lineElement);
+    svgElement.appendChild(polylineElement);
+
+    // Add SVG to the button container
+    buttonContainer.appendChild(svgElement);
+
+    // Add hover effect to move the button to the right
+    buttonContainer.addEventListener("mouseenter", () => {
+      buttonContainer.style.transform = "translateX(10px)"; // Move right on hover
+    });
+
+    buttonContainer.addEventListener("mouseleave", () => {
+      buttonContainer.style.transform = "translateX(0)"; // Reset position
+    });
+
+    // Make the button clickable and execute the callback
+    buttonContainer.addEventListener("click", () => {
+      // Toggle rotation
+      buttonContainer.style.transform = 
+      buttonContainer.style.transform === "rotate(180deg)" ? "rotate(0deg)": "rotate(180deg)";
+      // Toggle text content
+      ptag.textContent = ptag.textContent === "Show Preview Screen"? "Hide Preview Screen": "Show Preview Screen";
+  
+      // Append ptag (if needed; might not be necessary if already in the DOM)
+      buttonContainer.append(ptag);
+  
+      // Call the provided callback function, if it exists
+      if (callback) callback();
+  });
+    parentElement.appendChild(buttonContainer);
+  }
+
+  // Listen for messages from the popup
+  chrome.runtime.onMessage.addListener(function (
+    request,
+    sender,
+    sendResponse
+  ) {
+    CustomListnerForEnter();
+    if (
+      !document.getElementsByClassName("IframeClass").length ||
+      !document.getElementsByClassName("IframeClass")
+    ) {
+      iframeDiv();
+    }
+    setInterval(prepareUiBox, 5000);
+    if (request.message === "activeMode") {
+      iframe.width != "0" ? (iframe.width = "0") : (iframe.width = "400");
+      sendResponse({ reply: iframe.width });
+    }
+  });
+})();
